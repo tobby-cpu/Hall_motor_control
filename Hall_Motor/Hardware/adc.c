@@ -79,7 +79,7 @@ void configureADC()
     RCC_ADCCLKConfig(RCC_PCLK2_Div6);   // ADC时钟=12MHz
 
     // 2. 配置PB0为模拟输入
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;       // PB0
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;       // PB0|PB1
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;    // 模拟输入模式
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
@@ -95,17 +95,16 @@ void configureADC()
     ADC_Cmd(ADC1, ENABLE);
 
     // 4. ADC校准
-    ADC_ResetCalibration(ADC1);
-    while(ADC_GetResetCalibrationStatus(ADC1));
-    ADC_StartCalibration(ADC1);
-    while(ADC_GetCalibrationStatus(ADC1));
+    //ADC_ResetCalibration(ADC1);
+    //while(ADC_GetResetCalibrationStatus(ADC1));
+    //ADC_StartCalibration(ADC1);
+    //while(ADC_GetCalibrationStatus(ADC1));
 }
-
 /******************************************************************************/	
 
 unsigned short analogRead(unsigned char ch)   
 {
-	ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_13Cycles5);  //ADC1,ADC通道,顺序值,采样周期	  			    
+	ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_239Cycles5);  //ADC1,ADC通道,顺序值,采样周期	  			    
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE);		      //使能软件触发
 	while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC));  //等待转换结束
 	return ADC_GetConversionValue(ADC1);	          //返回最近一次的转换结果
@@ -115,8 +114,10 @@ unsigned short analogRead(unsigned char ch)
 
 float _readADCVoltageInline(unsigned char ch)
 {
-  unsigned short raw_adc = analogRead(ch);
-  return (float)raw_adc*3.3/4096;
+  
+	unsigned short raw_adc = analogRead(ch);
+  float angle = raw_adc*120.0f/4096.0f;
+	return angle ;
 }
 /******************************************************************************/	
 

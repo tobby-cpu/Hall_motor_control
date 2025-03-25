@@ -14,7 +14,7 @@
 
 /******************************************************************************/
 void Current_calibrateOffsets(MOTORController *M);
-uint32_t adc_value;
+
 /******************************************************************************/
 void InlineCurrentSense(MOTORController *M, float _shunt_resistor, float _gain, int _pinA, int _pinB, int _pinC)
 {
@@ -74,11 +74,6 @@ PhaseCurrent_s getPhaseCurrents(MOTORController *M)
 	current.c = (!_isset(M->pinC)) ? 0 : (_readADCVoltageInline(M->pinC) - M->offset_ic)*M->gain_c; // amps
 	
 	return current;
-}
-uint32_t getPhaseAngle(void)
-{
-	adc_value = _readADCVoltageInline(ADC_Channel_8);
-	return adc_value;
 }
 /******************************************************************************/
 

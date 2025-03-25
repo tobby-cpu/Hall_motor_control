@@ -3,6 +3,7 @@
 #include "timer.h"
 
 /***************************************************************************/
+
 void TIM2_PWM_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;

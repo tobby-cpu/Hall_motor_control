@@ -77,11 +77,11 @@ int main(void)
 	//所有PID参数都并非最佳参数，请根据电机自行匹配
 	M1.pole_pairs=2;              //电机极对数，磁铁的对数
 	M1.voltage_sensor_align=2.5;  //V alignSensor() use it，大功率电机设置的值小一点比如0.5-1，小电机设置的大一点比如2-3
-	M1.voltage_limit=12;           //V，最大值需小于12/1.732=6.9
+	M1.voltage_limit=10;           //V，最大值需小于12/1.732=6.9
 	M1.velocity_limit=20;         
 	M1.current_limit=50;          
 	M1.torque_controller=Type_voltage;  //Type_dc_current;//  Type_foc_current;  //Type_voltage;
-	M1.controller=Type_angle;  //Type_torque;  //Type_velocity;  //Type_angle; 
+	M1.controller=Type_angle_openloop;  //Type_torque;  //Type_velocity;  //Type_angle; 
 	M1.PID_d.P=0.6;               
 	M1.PID_d.I=0.5;                 
 	M1.PID_q.P=0.6;
@@ -95,11 +95,11 @@ int main(void)
 	
 	M2.pole_pairs=2;              //电机极对数
 	M2.voltage_sensor_align=1.5;    //V alignSensor() use it，大功率电机设置的值小一点比如0.5-1，小电机设置的大一点比如2-3
-	M2.voltage_limit=6;           //V，最大值需小于12/1.732=6.9
+	M2.voltage_limit=13;           //V，最大值需小于12/1.732=6.9
 	M2.velocity_limit=20;         
 	M2.current_limit=50;          
 	M2.torque_controller=Type_voltage;  //Type_dc_current;//  Type_foc_current;  //Type_voltage;
-	M2.controller=Type_angle;  //Type_torque;  //Type_velocity;  //Type_angle; 
+	//M2.controller=Type_torque;  //Type_torque;  //Type_velocity;  //Type_angle; 
 	M2.PID_d.P=0.6;             
 	M2.PID_d.I=0.5;                
 	M2.PID_q.P=0.6;
@@ -114,7 +114,7 @@ int main(void)
 	Hall_init();                  
 	Motor_init(&M1);
 	Motor_init(&M2);
-	Motor_initFOC(&M1, 2.0944, CW); //(&M1, 2.094, CW);
+	Motor_initFOC(&M1,4.188,CW);
 	Motor_initFOC(&M2, 0, UNKNOWN); //(&M2, 2.094, CW); 
   printf("Motor ready.\r\n");
 	
@@ -128,12 +128,99 @@ int main(void)
 		
 		}
 		move(&M1, M1.target);
-		loopFOC(&M1);
+		loopFOC(&M1,ADC_Channel_8);
 		move(&M2, M2.target);
-		loopFOC(&M2);
+		loopFOC(&M2,ADC_Channel_9);
+		commander_run();
 	}
 }
 
-
+void commander_run(void)
+{
+	if((USART_RX_STA&0x8000)!=0)
+	{
+		switch(USART_RX_BUF[0])
+			{ 
+			case 'Z'://切换模式
+				switch(USART_RX_BUF[1])
+				{
+					case'A':
+						M1.controller = Type_torque;
+						M1.target = 0;
+						printf("Type_torque!\r\n");
+						break;
+					case 'B':
+						M1.controller = Type_angle_openloop;
+						M1.target = 0;
+						printf("Type_angle_openloop!\r\n");
+						break;
+				}
+			
+			case 'H':
+				printf("Hello World!\r\n");
+				break;
+			case 'A':   //A6.28
+				M1.target=atof((const char *)(USART_RX_BUF+1));
+				printf("A=%.4f\r\n", M1.target);
+				break;
+			case 'B':   //B6.28
+				M2.target=atof((const char *)(USART_RX_BUF+1));
+				printf("B=%.4f\r\n", M2.target);
+				break;
+			case 'T':   //T6.28
+				M1.target=atof((const char *)(USART_RX_BUF+1));
+				M2.target=M1.target;
+				printf("T=%.4f\r\n", M1.target);
+				break;
+			
+			case 'M':  //M1，简单模仿官方通信协议
+				switch(USART_RX_BUF[1])
+				{
+					case 'P':   //设置电流环的P参数,MP1
+						M1.PID_d.P=atof((const char *)(USART_RX_BUF+2));
+					  M1.PID_q.P=M1.PID_d.P;
+					  printf("M1.current.P=%.4f\r\n", M1.PID_d.P);
+					  break;
+					case 'I':   //设置电流环的I参数,MI0.02
+						M1.PID_d.I=atof((const char *)(USART_RX_BUF+2));
+					  M1.PID_q.I=M1.PID_d.I;
+					  printf("M1.current.I=%.4f\r\n", M1.PID_d.I);
+					  break;
+					case 'V':   //MV  读实时速度
+					  printf("M1.vel=%.2f\r\n", M1.shaft_velocity);
+						break;
+					case 'A':   //MA  读绝对角度
+					  printf("M1.ang=%.2f\r\n", M1.shaft_angle);
+						break;
+					case 'G':  //MG读取角度传感器的值
+						printf("M1.new_ang=%.2f\r\n", M1.shaft_angle_new);
+						break;
+				}
+				break;
+			case 'N':  //M2
+				switch(USART_RX_BUF[1])
+				{
+					case 'P':
+						M2.PID_d.P=atof((const char *)(USART_RX_BUF+2));
+					  M2.PID_q.P=M2.PID_d.P;
+					  printf("M2.current.P=%.4f\r\n", M2.PID_d.P);
+					  break;
+					case 'I':
+						M2.PID_d.I=atof((const char *)(USART_RX_BUF+2));
+					  M2.PID_q.I=M2.PID_d.I;
+					  printf("M2.current.I=%.4f\r\n", M2.PID_d.I);
+					  break;
+					case 'V':   //MV  读实时速度
+					  printf("M2.vel=%.2f\r\n", M2.shaft_velocity);
+						break;
+					case 'A':   //MA  读绝对角度
+					  printf("M2.ang=%.2f\r\n", M2.shaft_angle);
+						break;
+				}
+				break;
+		}
+		USART_RX_STA=0;
+	}
+}
 
 

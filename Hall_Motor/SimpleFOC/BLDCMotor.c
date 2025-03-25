@@ -146,13 +146,14 @@ int alignSensor(MOTORController *M)
 	return 1;
 }
 /******************************************************************************/
-void loopFOC(MOTORController *M)
+void loopFOC(MOTORController *M, unsigned char ch)
 {
 	if(M->enable==0)return;   //没有使能，直接退出，减少资源占用
 	if( M->controller==Type_angle_openloop || M->controller==Type_velocity_openloop ) return;
 	
 	M->shaft_angle = shaftAngle(M);// shaft angle
-	M->shaft_angle_new = shaftAngle_new(M);
+	M->shaft_angle_new = _readADCVoltageInline(ch);
+
 	M->electrical_angle = electricalAngle(M);// electrical angle - need shaftAngle to be called first
 	
 	switch(M->torque_controller)
@@ -200,11 +201,11 @@ void move(MOTORController *M,float new_target)
 			break;
 		case Type_angle:
 			// angle set point
-      //M->shaft_angle_sp = new_target;
+      M->shaft_angle_sp = new_target;
       // calculate velocity set point
-      M->shaft_angle_sp = PIDoperator(&M->P_ang,(new_target - M->shaft_angle_new));
+      //M->shaft_angle_sp = PIDoperator(&M->P_ang,(new_target - M->shaft_angle_new));
 			//printf("A=%.4f\r\n", M->shaft_angle_new);
-			M->shaft_velocity_sp = PIDoperator(&M->P_ang,(M->shaft_angle_sp - M->shaft_angle));
+			M->shaft_velocity_sp = PIDoperator(&M->P_ang,(M->shaft_angle_sp - M->shaft_angle_new));
       // calculate the torque command
       M->current_sp = PIDoperator(&M->PID_vel,(M->shaft_velocity_sp - M->shaft_velocity)); // if voltage torque control
       // if torque controlled through voltage  
@@ -375,6 +376,7 @@ float angleOpenloop(MOTORController *M,float target_angle)
 	
   return Uq;
 }
+
 /******************************************************************************/
 
 

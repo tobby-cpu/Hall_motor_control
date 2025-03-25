@@ -699,7 +699,7 @@ I (.\lib\inc\stm32f10x_spi.h)(0x612B9224)
 I (.\lib\inc\stm32f10x_tim.h)(0x612B9224)
 I (.\lib\inc\stm32f10x_usart.h)(0x612B9224)
 I (.\lib\inc\misc.h)(0x612B9224)
-F (.\Hardware\timer.c)(0x61BE9422)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\timer.o --omf_browse .\objects\timer.crf --depend .\objects\timer.d)
+F (.\Hardware\timer.c)(0x67DC0D89)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\timer.o --omf_browse .\objects\timer.crf --depend .\objects\timer.d)
 I (.\startup\stm32f10x.h)(0x612B9220)
 I (.\startup\core_cm3.h)(0x612B9220)
 I (D:\keil5\ARM\ARMCC\include\stdint.h)(0x599ECD2E)
@@ -790,7 +790,7 @@ I (.\lib\inc\stm32f10x_tim.h)(0x612B9224)
 I (.\lib\inc\stm32f10x_usart.h)(0x612B9224)
 I (.\lib\inc\stm32f10x_wwdg.h)(0x612B9224)
 I (.\lib\inc\misc.h)(0x612B9224)
-F (.\Hardware\adc.c)(0x67D816D1)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\adc.o --omf_browse .\objects\adc.crf --depend .\objects\adc.d)
+F (.\Hardware\adc.c)(0x67E13C96)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\adc.o --omf_browse .\objects\adc.crf --depend .\objects\adc.d)
 I (Hardware\adc.h)(0x67D81712)
 I (.\startup\stm32f10x.h)(0x612B9220)
 I (.\startup\core_cm3.h)(0x612B9220)
@@ -828,9 +828,9 @@ I (.\Hardware\timer.h)(0x61BE9440)
 I (.\Hardware\adc.h)(0x67D81712)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)
@@ -873,15 +873,15 @@ I (.\Hardware\timer.h)(0x61BE9440)
 I (.\Hardware\adc.h)(0x67D81712)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)
 I (.\SimpleFOC\CurrentSense.h)(0x67D006B3)
 I (.\SimpleFOC\HallSensor.h)(0x67D003DD)
-F (.\SimpleFOC\FOCMotor.c)(0x67D80961)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\focmotor.o --omf_browse .\objects\focmotor.crf --depend .\objects\focmotor.d)
+F (.\SimpleFOC\FOCMotor.c)(0x67DBF825)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\focmotor.o --omf_browse .\objects\focmotor.crf --depend .\objects\focmotor.d)
 I (.\user\MyProject.h)(0x64C71D20)
 I (.\Hardware\usart.h)(0x612B9224)
 I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
@@ -918,16 +918,16 @@ I (.\Hardware\timer.h)(0x61BE9440)
 I (.\Hardware\adc.h)(0x67D81712)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)
 I (.\SimpleFOC\CurrentSense.h)(0x67D006B3)
 I (.\SimpleFOC\HallSensor.h)(0x67D003DD)
-F (.\SimpleFOC\BLDCMotor.c)(0x67D8186C)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\bldcmotor.o --omf_browse .\objects\bldcmotor.crf --depend .\objects\bldcmotor.d)
-I (SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+F (.\SimpleFOC\BLDCMotor.c)(0x67DC0BA0)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\bldcmotor.o --omf_browse .\objects\bldcmotor.crf --depend .\objects\bldcmotor.d)
+I (SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\user\MyProject.h)(0x64C71D20)
 I (.\Hardware\usart.h)(0x612B9224)
 I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
@@ -964,9 +964,9 @@ I (.\Hardware\timer.h)(0x61BE9440)
 I (.\Hardware\adc.h)(0x67D81712)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)
@@ -1009,9 +1009,9 @@ I (.\Hardware\timer.h)(0x61BE9440)
 I (.\Hardware\adc.h)(0x67D81712)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)
@@ -1054,9 +1054,9 @@ I (.\Hardware\timer.h)(0x61BE9440)
 I (.\Hardware\adc.h)(0x67D81712)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)
@@ -1099,15 +1099,15 @@ I (.\Hardware\timer.h)(0x61BE9440)
 I (.\Hardware\adc.h)(0x67D81712)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)
 I (.\SimpleFOC\CurrentSense.h)(0x67D006B3)
 I (.\SimpleFOC\HallSensor.h)(0x67D003DD)
-F (.\SimpleFOC\InlineCurrentSense.c)(0x67D817C1)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\inlinecurrentsense.o --omf_browse .\objects\inlinecurrentsense.crf --depend .\objects\inlinecurrentsense.d)
+F (.\SimpleFOC\InlineCurrentSense.c)(0x67DC05D6)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\inlinecurrentsense.o --omf_browse .\objects\inlinecurrentsense.crf --depend .\objects\inlinecurrentsense.d)
 I (.\user\MyProject.h)(0x64C71D20)
 I (.\Hardware\usart.h)(0x612B9224)
 I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
@@ -1144,15 +1144,15 @@ I (.\Hardware\timer.h)(0x61BE9440)
 I (.\Hardware\adc.h)(0x67D81712)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)
 I (.\SimpleFOC\CurrentSense.h)(0x67D006B3)
 I (.\SimpleFOC\HallSensor.h)(0x67D003DD)
-F (.\SimpleFOC\HallSensor.c)(0x67D80950)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\hallsensor.o --omf_browse .\objects\hallsensor.crf --depend .\objects\hallsensor.d)
+F (.\SimpleFOC\HallSensor.c)(0x67DC0673)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\hallsensor.o --omf_browse .\objects\hallsensor.crf --depend .\objects\hallsensor.d)
 I (.\user\MyProject.h)(0x64C71D20)
 I (.\Hardware\usart.h)(0x612B9224)
 I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
@@ -1189,15 +1189,15 @@ I (.\Hardware\timer.h)(0x61BE9440)
 I (.\Hardware\adc.h)(0x67D81712)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)
 I (.\SimpleFOC\CurrentSense.h)(0x67D006B3)
 I (.\SimpleFOC\HallSensor.h)(0x67D003DD)
-F (.\user\main.c)(0x67D817FD)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\user\main.c)(0x67E15666)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\lib\inc -I .\startup -I .\Hardware -I .\SimpleFOC -I .\user-I.\RTE\_STM32-ID:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (.\startup\stm32f10x.h)(0x612B9220)
 I (.\startup\core_cm3.h)(0x612B9220)
 I (D:\keil5\ARM\ARMCC\include\stdint.h)(0x599ECD2E)
@@ -1237,9 +1237,9 @@ I (.\Hardware\adc.h)(0x67D81712)
 I (.\user\MyProject.h)(0x64C71D20)
 I (.\SimpleFOC\foc_utils.h)(0x61BFEB82)
 I (D:\keil5\ARM\ARMCC\include\math.h)(0x599ECD2E)
-I (.\user\user.h)(0x67D00533)
+I (.\user\user.h)(0x67DC098C)
 I (.\SimpleFOC\FOCMotor.h)(0x67D00457)
-I (.\SimpleFOC\BLDCmotor.h)(0x6423EC9C)
+I (.\SimpleFOC\BLDCmotor.h)(0x67DC0BCE)
 I (.\SimpleFOC\lowpass_filter.h)(0x61BEDDDA)
 I (.\SimpleFOC\pid.h)(0x61BFCC4E)
 I (.\SimpleFOC\InlineCurrentSense.h)(0x67D00687)

@@ -192,8 +192,7 @@ float getAngle(MOTORController *M)
 
 float getAngle_new(void)
 {
-	uint32_t Angle;
-	Angle = getPhaseAngle();
+	float Angle = getPhaseAngle();
 	return  Angle  ;
 }
 /***************************************************************************/
