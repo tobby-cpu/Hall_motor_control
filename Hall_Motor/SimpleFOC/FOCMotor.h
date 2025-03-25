@@ -8,7 +8,6 @@
 float shaftAngle(MOTORController *M);
 float shaftVelocity(MOTORController *M);
 float electricalAngle(MOTORController *M);
-float shaftAngle_new(MOTORController *M);
 /******************************************************************************/
 
 #endif

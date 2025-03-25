@@ -69,7 +69,7 @@ void configureADCInline(int a,int b,int c)
  
 //	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
 }
-void configureADC()
+void configureADC(void)
 {
     ADC_InitTypeDef ADC_InitStructure; 
     GPIO_InitTypeDef GPIO_InitStructure;

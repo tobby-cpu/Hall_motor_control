@@ -13,12 +13,6 @@ float shaftAngle(MOTORController *M)
   return M->sensor_direction * getAngle(M) - sensor_offset;
 }
 
-float shaftAngle_new(MOTORController *M)
-{
-  // if no sensor linked return previous value ( for open loop )
-  //if(!sensor) return shaft_angle;
-  return M->sensor_direction * getAngle_new();
-}
 // shaft velocity calculation
 float shaftVelocity(MOTORController *M)
 {

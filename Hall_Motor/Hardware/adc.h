@@ -4,7 +4,7 @@
 #include "stm32f10x.h"
 #include "MyProject.h"
 /******************************************************************************/
-void configureADC();
+void configureADC(void);
 void configureADCInline(int a,int b,int c);
 unsigned short analogRead(unsigned char ch);
 float _readADCVoltageInline(unsigned char ch);

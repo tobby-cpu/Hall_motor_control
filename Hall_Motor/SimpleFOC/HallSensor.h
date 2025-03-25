@@ -8,7 +8,6 @@
 void Hall_init(void);
 float getAngle(MOTORController *M);
 float getVelocity(MOTORController *M);
-float getAngle_new(void);
 /******************************************************************************/
 
 

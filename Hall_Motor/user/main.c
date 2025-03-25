@@ -155,7 +155,7 @@ void commander_run(void)
 						printf("Type_angle_openloop!\r\n");
 						break;
 				}
-			
+			  break;
 			case 'H':
 				printf("Hello World!\r\n");
 				break;

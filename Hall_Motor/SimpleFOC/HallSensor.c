@@ -190,9 +190,4 @@ float getAngle(MOTORController *M)
   return ((float)(M->Hall.electric_rotations * 6 + M->Hall.electric_sector) / (float)M->Hall.cpr) * _2PI ;
 }
 
-float getAngle_new(void)
-{
-	float Angle = getPhaseAngle();
-	return  Angle  ;
-}
 /***************************************************************************/
