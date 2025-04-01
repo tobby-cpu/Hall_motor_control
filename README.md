@@ -1,1 +1,16 @@
 # Hall_motor_control
+PA3--ADC1--M1;
+PA4--ADC2--M2;
+PA9--TX1;
+PA10--RX1;
+PB9--M1使能；A
+PB3--M2使能；
+HALL1：PB6\PB7\PA12; //hall1信号
+HALL2: PB10\PB11\PA13; //hall2信号
+HALL1: PA0\PA1\PA2 //三相
+HALL2: PB0\PA6\PA7 //三相
+//主控：
+PA9--TX;
+PA10--RX;
+PA2--TX;
+PA3--RX;
