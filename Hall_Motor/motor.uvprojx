@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>.\lib\inc;.\startup;.\Hardware;.\SimpleFOC;.\user</IncludePath>
+              <IncludePath>.\lib\inc;.\startup;.\Hardware;.\SimpleFOC;.\user;.\Hardware\finger</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
