@@ -35,6 +35,7 @@
 .\objects\focmotor.o: .\Hardware\timer.h
 .\objects\focmotor.o: .\Hardware\adc.h
 .\objects\focmotor.o: .\user\MyProject.h
+.\objects\focmotor.o: .\spi\SPI.h
 .\objects\focmotor.o: .\SimpleFOC\foc_utils.h
 .\objects\focmotor.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\focmotor.o: .\user\user.h

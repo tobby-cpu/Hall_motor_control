@@ -9,6 +9,7 @@
 #include "delay.h"
 #include "timer.h"
 #include "adc.h"
+#include "SPI.h"
 
 #include "foc_utils.h"
 #include "FOCMotor.h"

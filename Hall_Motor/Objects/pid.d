@@ -35,6 +35,7 @@
 .\objects\pid.o: .\Hardware\timer.h
 .\objects\pid.o: .\Hardware\adc.h
 .\objects\pid.o: .\user\MyProject.h
+.\objects\pid.o: .\spi\SPI.h
 .\objects\pid.o: .\SimpleFOC\foc_utils.h
 .\objects\pid.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\pid.o: .\user\user.h

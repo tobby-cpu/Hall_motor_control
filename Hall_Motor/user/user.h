@@ -125,7 +125,7 @@ typedef struct
 	unsigned long velocity_calc_timestamp;
 } MOTORController;
 
-extern MOTORController M1,M2,M3;
+extern MOTORController M1,M2;
 /******************************************************************************/
 #endif
 

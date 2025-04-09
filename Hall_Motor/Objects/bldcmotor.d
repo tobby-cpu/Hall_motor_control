@@ -36,6 +36,7 @@
 .\objects\bldcmotor.o: .\Hardware\timer.h
 .\objects\bldcmotor.o: .\Hardware\adc.h
 .\objects\bldcmotor.o: .\user\MyProject.h
+.\objects\bldcmotor.o: .\spi\SPI.h
 .\objects\bldcmotor.o: .\SimpleFOC\foc_utils.h
 .\objects\bldcmotor.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\bldcmotor.o: .\user\user.h

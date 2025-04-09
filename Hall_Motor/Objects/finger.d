@@ -1,1 +1,1 @@
-.\objects\finger.o: Hardware\finger.c
+.\objects\finger.o: finger.c

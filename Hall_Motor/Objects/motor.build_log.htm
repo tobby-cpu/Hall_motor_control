@@ -22,16 +22,103 @@ Dialog DLL:      TCM.DLL V1.34.0.0
  
 <h2>Project:</h2>
 D:\8_霍尔电机\8_霍尔电机\Hall_Motor\Hall_Motor\motor.uvprojx
-Project File Date:  04/07/2025
+Project File Date:  04/09/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\keil5\ARM\ARMCC\Bin'
 Build target 'STM32'
-compiling main.c...
-linking...
-Program Size: Code=20740 RO-data=1300 RW-data=948 ZI-data=2484  
-FromELF: creating hex file...
-".\Objects\motor.axf" - 0 Error(s), 0 Warning(s).
+compiling finger.c...
+finger.c(21): error:  #20: identifier "epsilon" is undefined
+        a_tmp = alpha - epsilon;
+finger.c(22): warning:  #223-D: function "cos" declared implicitly
+        b_a_tmp = cos(a_tmp);
+finger.c(23): error:  #20: identifier "AC" is undefined
+        c_a_tmp = AC * AC;
+finger.c(24): error:  #20: identifier "AF" is undefined
+        d_a_tmp = AF * AF;
+finger.c(25): warning:  #223-D: function "sqrt" declared implicitly
+        e_a_tmp = sqrt((c_a_tmp + 2.0 * b_a_tmp * AC * AF) + d_a_tmp);
+finger.c(26): error:  #20: identifier "EF" is undefined
+        f_a_tmp = EF * EF;
+finger.c(27): error:  #20: identifier "zeta" is undefined
+        g_a_tmp = beta + zeta;
+finger.c(29): warning:  #223-D: function "asin" declared implicitly
+        a_tmp_tmp = asin(AC * sin(a_tmp) / e_a_tmp);
+finger.c(29): warning:  #223-D: function "sin" declared implicitly
+        a_tmp_tmp = asin(AC * sin(a_tmp) / e_a_tmp);
+finger.c(33): error:  #20: identifier "DE" is undefined
+        i_a_tmp = DE - h_a_tmp;
+finger.c(37): error:  #20: identifier "AB" is undefined
+        c_delta0_tmp = 2.0 * AB * AC * cos((lambda - epsilon) + PI * 1.5);
+finger.c(37): error:  #20: identifier "lambda" is undefined
+        c_delta0_tmp = 2.0 * AB * AC * cos((lambda - epsilon) + PI * 1.5);
+finger.c(37): error:  #20: identifier "PI" is undefined
+        c_delta0_tmp = 2.0 * AB * AC * cos((lambda - epsilon) + PI * 1.5);
+finger.c(40): error:  #20: identifier "PI_OVER_2" is undefined
+        e_delta0_tmp *= 2.0 * AB * cos(((alpha - lambda) - PI_OVER_2) + acos((d_delta0_tmp + 2.0 * EF * g_a_tmp * AF) /(2.0 * AF * e_delta0_tmp)));
+finger.c(40): warning:  #223-D: function "acos" declared implicitly
+        e_delta0_tmp *= 2.0 * AB * cos(((alpha - lambda) - PI_OVER_2) + acos((d_delta0_tmp + 2.0 * EF * g_a_tmp * AF) /(2.0 * AF * e_delta0_tmp)));
+finger.c(45): error:  #20: identifier "BK" is undefined
+        return BK - sqrt((((((f_delta0_tmp + DK * DK) + f_a_tmp) - 2.0 * DK * cos(PI_OVER_2 - acos(((((((((d_a_tmp - c_a_tmp) + delta0_tmp) + f_a_tmp) + i_a_tmp * i_a_tmp) +
+finger.c(45): error:  #20: identifier "DK" is undefined
+        return BK - sqrt((((((f_delta0_tmp + DK * DK) + f_a_tmp) - 2.0 * DK * cos(PI_OVER_2 - acos(((((((((d_a_tmp - c_a_tmp) + delta0_tmp) + f_a_tmp) + i_a_tmp * i_a_tmp) +
+finger.c(52): error:  #20: identifier "CD" is undefined
+      return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
+finger.c(52): error:  #20: identifier "DE" is undefined
+      return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
+finger.c(52): warning:  #223-D: function "sqrt" declared implicitly
+      return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
+finger.c(52): error:  #20: identifier "AC" is undefined
+      return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
+finger.c(52): error:  #20: identifier "AF" is undefined
+      return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
+finger.c(52): error:  #20: identifier "EF" is undefined
+      return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
+finger.c(52): warning:  #223-D: function "cos" declared implicitly
+      return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
+finger.c(52): error:  #20: identifier "epsilon" is undefined
+      return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
+finger.c(53): error:  #20: identifier "zeta" is undefined
+finger.c(53): warning:  #223-D: function "asin" declared implicitly
+finger.c(53): warning:  #223-D: function "sin" declared implicitly
+finger.c(60): error:  #20: identifier "FG" is undefined
+      double delta2_1 = FG * FG + FH * FH + HI * HI;
+finger.c(60): error:  #20: identifier "FH" is undefined
+      double delta2_1 = FG * FG + FH * FH + HI * HI;
+finger.c(60): error:  #20: identifier "HI" is undefined
+      double delta2_1 = FG * FG + FH * FH + HI * HI;
+finger.c(61): warning:  #223-D: function "cos" declared implicitly
+      double delta2_2 = cos(gamma + psy + asin((FG * sin(beta - phi)) / sqrt(FG * FG + FH * FH + 2 * FG * FH * cos(beta - phi))));
+finger.c(61): error:  #20: identifier "psy" is undefined
+      double delta2_2 = cos(gamma + psy + asin((FG * sin(beta - phi)) / sqrt(FG * FG + FH * FH + 2 * FG * FH * cos(beta - phi))));
+finger.c(61): warning:  #223-D: function "asin" declared implicitly
+      double delta2_2 = cos(gamma + psy + asin((FG * sin(beta - phi)) / sqrt(FG * FG + FH * FH + 2 * FG * FH * cos(beta - phi))));
+finger.c(61): warning:  #223-D: function "sin" declared implicitly
+      double delta2_2 = cos(gamma + psy + asin((FG * sin(beta - phi)) / sqrt(FG * FG + FH * FH + 2 * FG * FH * cos(beta - phi))));
+finger.c(61): error:  #20: identifier "phi" is undefined
+      double delta2_2 = cos(gamma + psy + asin((FG * sin(beta - phi)) / sqrt(FG * FG + FH * FH + 2 * FG * FH * cos(beta - phi))));
+finger.c(61): warning:  #223-D: function "sqrt" declared implicitly
+      double delta2_2 = cos(gamma + psy + asin((FG * sin(beta - phi)) / sqrt(FG * FG + FH * FH + 2 * FG * FH * cos(beta - phi))));
+finger.c(63): error:  #20: identifier "GI" is undefined
+      return sqrt(delta2_1 + 2 * HI * delta2_2 * delta2_3 + 2 * FG * FH * cos(beta - phi)) - GI;
+finger.c(68): error:  #20: identifier "PI" is undefined
+      return PI - zeta - beta;
+finger.c(68): error:  #20: identifier "zeta" is undefined
+      return PI - zeta - beta;
+finger.c(78): warning:  #223-D: function "rtIsNaN" declared implicitly
+      if (rtIsNaN(u0) || rtIsNaN(u1)) {
+finger.c(79): error:  #20: identifier "rtNaN" is undefined
+          y = rtNaN;
+finger.c(81): warning:  #223-D: function "fabs" declared implicitly
+          d = fabs(u0);
+finger.c(83): warning:  #223-D: function "rtIsInf" declared implicitly
+          if (rtIsInf(u1)) {
+finger.c(88): error:  #20: identifier "rtInf" is undefined
+                      y = rtInf;
+finger.c(95): error:  #20: identifier "rtInf" is undefined
+                  y = rtInf;
+finger.c: 16 warnings, 30 errors
+".\Objects\motor.axf" - 30 Error(s), 16 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -45,7 +132,8 @@ Package Vendor: Keil
   D:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:02
+Target not created.
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

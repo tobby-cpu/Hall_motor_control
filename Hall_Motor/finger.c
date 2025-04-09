@@ -1,319 +1,4 @@
-
-#include "stm32f10x.h"
-#include <string.h>
-#include <stdlib.h>
-#include "MyProject.h"
-#include "user.h"
-
-/******************************************************************************/
-//Dalian University of Technology Yunxin Zhao (Add an angle control loop and three-motor coordinated control to the existing closed-loop control system.)
-/******************************************************************************/
-#define LED_blink    GPIOC->ODR^=(1<<13)
-#define PI 3.14159265358979323846
-#define rtIsNaN(x) (isnan(x))
-#define rtIsInf(x) (isinf(x))
-#define rtNaN (NAN)
-#define rtInf (INFINITY)
-#define MATRIX_ELEMENT(m, i, j) m[i][j]
-//是耦合，0是自适应 judge_2 = 1是耦合，0是自适应
-double JT[3][3], h1, h2, px, py, udge_1,judge_1,judge_2;     
-const double PI_OVER_2;
-double JT[3][3];
-double tao[1][4];
-int i, j, k, m;  
-// 定义输出变量
-double delta0, delta1, delta2, theta2;
-double JA[4][3];
-typedef struct {
-    double result1[3];
-    double result2[3];
-    double result3[3];
-    double result4[3];
-} JA_Result;
-double T[1][4];
-double k1 = 1;
-double k2 = 1;
-double k3 = 1;
-double F0 = 5;
-double theta2_0 = 2.3562;
-// 中间结果和最终结果
-double temp[1][3];
-double invJT[3][3];
-double F[1][3];
-double beta_o;
-double gamma_o;
-JA_Result results;
-//***************************************************************************************************************************************************//
-//雅各比矩阵函数常量
-JA_Result res;
-double a_tmp, a_tmp_tmp, a_tmp_tmp_tmp, a_tmp_tmp_tmp_tmp, b_a_tmp, b_a_tmp_tmp, b_a_tmp_tmp_tmp, b_reslut1_1_tmp, b_reslut1_1_tmp_tmp;
-double c_a_tmp, c_a_tmp_tmp, c_reslut1_1_tmp, c_reslut1_1_tmp_tmp, d_a_tmp, d_a_tmp_tmp, d_reslut1_1_tmp, d_reslut1_1_tmp_tmp, e_a_tmp;
-double e_a_tmp_tmp, e_reslut1_1_tmp, e_reslut1_1_tmp_tmp, f_a_tmp, f_a_tmp_tmp, f_reslut1_1_tmp, f_reslut1_1_tmp_tmp, g_a_tmp, g_a_tmp_tmp;
-double g_reslut1_1_tmp, g_reslut1_1_tmp_tmp, h_a_tmp, h_a_tmp_tmp, h_reslut1_1_tmp, h_reslut1_1_tmp_tmp, i_a_tmp, i_a_tmp_tmp, i_reslut1_1_tmp;
-double j_a_tmp, j_a_tmp_tmp, j_reslut1_1_tmp, k_a_tmp, k_a_tmp_tmp, k_reslut1_1_tmp, l_a_tmp, l_a_tmp_tmp, l_reslut1_1_tmp, m_a_tmp, m_a_tmp_tmp;
-double m_reslut1_1_tmp, n_reslut1_1_tmp, o_reslut1_1_tmp, p_reslut1_1_tmp, q_reslut1_1_tmp, r_reslut1_1_tmp, reslut1_1_tmp, reslut1_1_tmp_tmp;
-double reslut1_1_tmp_tmp_tmp, reslut1_1_tmp_tmp_tmp_tmp, result1_1, result1_2, result1_3, result2_1, result2_2, result2_3, result3_1, result3_2, result3_3;
-double result4_1, result4_2, result4_3;
-/****************************************************************************************************************************************************/
-//定义常量
-double zeta = 0.7854;
-double  epsilon = 3.1416;
-double  lambda = 0;
-double  AF = 45;
-double  AC = 14.2891;
-double  AB = 5.8710;
-double  EF = 11.5000;
-double  DE = 24.4060;
-double  CD = 15.2790;
-double  DK = 2.8000;
-double  BK = 28.6700;
-double  phi = 156.5722;
-double  FH = 28;
-double  FG = 5.2818;
-double  psy = 0.7854;
-double  HI = 11;
-double  GI = 32.4708;
-double  CE = 39.6850;
-double  F_0 = 0;
-double  F_1 = 0;
-double  F_2 = 0;
-//***************************************************************************************************************************************************//
-//声明函数
-void commander_run(void);
-void commander_spi(void);
-double calculate_delta0(double alpha, double beta, double gamma);
-double calculate_delta1(double alpha, double beta, double gamma);
-double calculate_delta2(double alpha, double beta, double gamma);
-double calculate_theta2(double alpha, double beta, double gamma);
-static double rt_powd_snf(double u0, double u1);
-JA_Result calculate_JA(double alpha, double beta, double gamma);
-void matrix_multiply(double *A, double *B, double *C, int m, int n, int p) ;
-void compute_JT(double JT[3][3], double h1, double h2, double AF, double beta, double gamma, double rho, double FH, double px, double py);
-void compute_tao(double T[1][4], double F0, double judge_1, double judge_2, double k1, double delta1, double F_01, double k2, double delta2, 
-	double F_02, double theta2, double theta2_0, double k3, double F_03);
-int inverse_3x3(double *A, double *invA);
-double calculation_beta(double alpha, double AC, double AF, double CE, double EF, double zeta, double epsilon);
-double calculation_gamma(double FG, double FH, double GI, double HI, double psy, double phi, double beta);
-int main_calculate(double F_01, double F_02, double F_03, double alpha, double beta, double gamma, double rho);
-/*****************************************************************************************************************************************************/
-MOTORController M1,M2;
-
-long timecntr_pre=0;
-long time_cntr=0;
-/******************************************************************************/
-//us计时，每71.5分钟溢出循环一次
-uint32_t timecount(void)
-{
-	uint32_t  diff,now_us;
-	
-	now_us = _micros();    //0xFFFFFFFF=4294967295 us=71.5分钟
-	if(now_us>=timecntr_pre)diff = now_us - timecntr_pre;   //us
-	else
-		diff = 0xFFFFFFFF - timecntr_pre + now_us;
-	timecntr_pre = now_us;
-	
-	return diff;
-}
-/******************************************************************************/
-void GPIO_Config(void)
-{
-	GPIO_InitTypeDef GPIO_InitStructure;
-	
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOC|RCC_APB2Periph_AFIO, ENABLE);//使能GPIOA,GPIOB,GPIOC,AFIO;
-	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);
-	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;         //PC13是LED
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;   //推挽输出	
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;  //速度
-	GPIO_Init(GPIOC, &GPIO_InitStructure);             //对选中管脚初始化
-	GPIO_ResetBits(GPIOC,GPIO_Pin_13);                 //上电点亮LED
-	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_9;          //使能,PB9是motor1,PB3是motor2
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
-	GPIO_ResetBits(GPIOB,GPIO_Pin_3|GPIO_Pin_9);                  //低电平解除,Motor_init()中使能
-}
-/******************************************************************************/
-int main(void)
-{
-	GPIO_Config();
-	uart_init(115200);
-	strcpy(M1.str, "M1");
-	strcpy(M2.str, "M2");
-	TIM2_PWM_Init();    //M1_PWM
-	TIM3_PWM_Init();    //M2_PWM
-	systick_CountInit();      
-	printf("Double HALL F1\r\n");
-	
-	delay_ms(1000);               //Wait for the system to stabilize
-	//InlineCurrentSense(&M1,0.001,50,ADC_Channel_3,ADC_Channel_4,NOT_SET);    //SimpleMotor//采样电阻阻值，运放倍数，A相，B相，C相
-	//InlineCurrentSense(&M2,0.001,50,ADC_Channel_5,ADC_Channel_9,NOT_SET);
-	//InlineCurrentSense_Init(&M1); //ADC初始化和偏置电压校准
-	//InlineCurrentSense_Init(&M2);
-	configureADC();
-	LPF_init(&M1);                //LPF参数初始化，可进入函数初始化参数
-	LPF_init(&M2);
-	PID_init(&M1);                //PID参数初始化，可进入函数初始化参数
-	PID_init(&M2);
-	
-	voltage_power_supply=24;      //V,两个电机的共同参数
-	
-	//所有PID参数都并非最佳参数，请根据电机自行匹配
-	M1.pole_pairs=2;              //电机极对数，磁铁的对数
-	M1.voltage_sensor_align=2.5;  //V alignSensor() use it，大功率电机设置的值小一点比如0.5-1，小电机设置的大一点比如2-3
-	M1.voltage_limit=10;           //V，最大值需小于12/1.732=6.9
-	M1.velocity_limit=20;         
-	M1.current_limit=50;          
-	M1.torque_controller=Type_voltage;  //Type_dc_current;//  Type_foc_current;  //Type_voltage;
-	M1.controller=Type_angle_openloop;  //Type_torque;  //Type_velocity;  //Type_angle; 
-	M1.PID_d.P=0.6;               
-	M1.PID_d.I=0.5;                 
-	M1.PID_q.P=0.6;
-	M1.PID_q.I=0.5;
-	M1.PID_vel.P=0.1;             
-	M1.PID_vel.I=0.6;
-	M1.P_ang.P=20;                
-	M1.PID_vel.output_ramp=50;    
-	M1.LPF_vel.Tf=0.05;           
-	M1.target=0;
-	
-	M2.pole_pairs=2;              //电机极对数
-	M2.voltage_sensor_align=1.5;    //V alignSensor() use it，大功率电机设置的值小一点比如0.5-1，小电机设置的大一点比如2-3
-	M2.voltage_limit=13;           //V，最大值需小于12/1.732=6.9
-	M2.velocity_limit=20;         
-	M2.current_limit=50;          
-	M2.torque_controller=Type_voltage;  //Type_dc_current;//  Type_foc_current;  //Type_voltage;
-	//M2.controller=Type_torque;  //Type_torque;  //Type_velocity;  //Type_angle; 
-	M2.PID_d.P=0.6;             
-	M2.PID_d.I=0.5;                
-	M2.PID_q.P=0.6;
-	M2.PID_q.I=0.5;
-	M2.PID_vel.P=0.1;             
-	M2.PID_vel.I=0.6;
-	M2.P_ang.P = 20;							
-	M2.PID_vel.output_ramp=50;    
-	M2.LPF_vel.Tf=0.05;         
-	M2.target=0;
-	
-	Hall_init();                  
-	Motor_init(&M1);
-	Motor_init(&M2);
-	Motor_initFOC(&M1,4.188,CW);
-	Motor_initFOC(&M2, 0, UNKNOWN); //(&M2, 2.094, CW); 
-  printf("Motor ready.\r\n");
-	//***************************************************//
-
-
-	//**********************************************************//
-	while(1)
-	{
-		
-		time_cntr +=timecount();
-		if(time_cntr>=5000)  //us
-		{
-			time_cntr=0;
-			LED_blink;
-		
-		}
-		move(&M1, M1.target);
-		loopFOC(&M1,ADC_Channel_3);
-		move(&M2, M2.target);
-		loopFOC(&M2,ADC_Channel_4);
-		commander_run();
-		//main_calculate();
-	}
-}
-
-void commander_run(void)
-{
-	if((USART_RX_STA&0x8000)!=0)
-	{
-		switch(USART_RX_BUF[0])
-			{ 
-			case 'Z'://切换模式
-				switch(USART_RX_BUF[1])
-				{
-					case'A':
-						M1.controller = Type_torque;
-						M1.target = 0;
-						printf("Type_torque!\r\n");
-						break;
-					case 'B':
-						M1.controller = Type_angle_openloop;
-						M1.target = 0;
-						printf("Type_angle_openloop!\r\n");
-						break;
-				}
-			  break;
-			case 'H':
-				printf("Hello World!\r\n");
-				break;
-			case 'A':   //A6.28
-				M1.target=atof((const char *)(USART_RX_BUF+1));
-				printf("A=%.4f\r\n", M1.target);
-				break;
-			case 'B':   //B6.28
-				M2.target=atof((const char *)(USART_RX_BUF+1));
-				printf("B=%.4f\r\n", M2.target);
-				break;
-			case 'T':   //T6.28
-				M1.target=atof((const char *)(USART_RX_BUF+1));
-				M2.target=M1.target;
-				printf("T=%.4f\r\n", M1.target);
-				break;
-			
-			case 'M':  //M1，简单模仿官方通信协议
-				switch(USART_RX_BUF[1])
-				{
-					case 'P':   //设置电流环的P参数,MP1
-						M1.PID_d.P=atof((const char *)(USART_RX_BUF+2));
-					  M1.PID_q.P=M1.PID_d.P;
-					  printf("M1.current.P=%.4f\r\n", M1.PID_d.P);
-					  break;
-					case 'I':   //设置电流环的I参数,MI0.02
-						M1.PID_d.I=atof((const char *)(USART_RX_BUF+2));
-					  M1.PID_q.I=M1.PID_d.I;
-					  printf("M1.current.I=%.4f\r\n", M1.PID_d.I);
-					  break;
-					case 'V':   //MV  读实时速度
-					  printf("M1.vel=%.2f\r\n", M1.shaft_velocity);
-						break;
-					case 'A':   //MA  读绝对角度
-					  printf("M1.ang=%.2f\r\n", M1.shaft_angle);
-						break;
-					case 'G':  //MG读取角度传感器的值
-						printf("M1.new_ang=%.2f\r\n", M1.shaft_angle_new);
-						break;
-				}
-				break;
-			case 'N':  //M2
-				switch(USART_RX_BUF[1])
-				{
-					case 'P':
-						M2.PID_d.P=atof((const char *)(USART_RX_BUF+2));
-					  M2.PID_q.P=M2.PID_d.P;
-					  printf("M2.current.P=%.4f\r\n", M2.PID_d.P);
-					  break;
-					case 'I':
-						M2.PID_d.I=atof((const char *)(USART_RX_BUF+2));
-					  M2.PID_q.I=M2.PID_d.I;
-					  printf("M2.current.I=%.4f\r\n", M2.PID_d.I);
-					  break;
-					case 'V':   //MV  读实时速度
-					  printf("M2.vel=%.2f\r\n", M2.shaft_velocity);
-						break;
-					case 'A':   //MA  读绝对角度
-					  printf("M2.ang=%.2f\r\n", M2.shaft_angle);
-						break;
-				}
-				break;
-		}
-		USART_RX_STA=0;
-	}
-}
-
-// 计算 delta0
+// ?? delta0
 double calculate_delta0(double alpha, double beta, double gamma) {
       double a_tmp;
       double a_tmp_tmp;
@@ -362,7 +47,7 @@ double calculate_delta0(double alpha, double beta, double gamma) {
       e_a_tmp) + b_a_tmp)) - e_delta0_tmp)))) * sqrt((a_tmp - g_a_tmp) - e_delta0_tmp)) + b_delta0_tmp) - g_a_tmp) - e_delta0_tmp);
 }
 
-// 计算 delta1
+// ?? delta1
 double calculate_delta1(double alpha, double beta, double gamma) {
     return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
         2 * EF * cos(beta + zeta + asin((AC * sin(alpha - epsilon)) /
@@ -370,7 +55,7 @@ double calculate_delta1(double alpha, double beta, double gamma) {
         sqrt(AC * AC + 2 * cos(alpha - epsilon) * AC * AF + AF * AF));
 }
 
-// 计算 delta2
+// ?? delta2
 double calculate_delta2(double alpha, double beta, double gamma) {
     double delta2_1 = FG * FG + FH * FH + HI * HI;
     double delta2_2 = cos(gamma + psy + asin((FG * sin(beta - phi)) / sqrt(FG * FG + FH * FH + 2 * FG * FH * cos(beta - phi))));
@@ -378,14 +63,14 @@ double calculate_delta2(double alpha, double beta, double gamma) {
     return sqrt(delta2_1 + 2 * HI * delta2_2 * delta2_3 + 2 * FG * FH * cos(beta - phi)) - GI;
 }
 
-// 计算 theta2
+// ?? theta2
 double calculate_theta2(double alpha, double beta, double gamma) {
     return PI - zeta - beta;
 }
 
 
 
-// 实现函数
+// ????
 static double rt_powd_snf(double u0, double u1) {
     double d;
     double d1;
@@ -432,7 +117,7 @@ static double rt_powd_snf(double u0, double u1) {
 
 
 
-// 计算雅可比矩阵 JA
+// ??????? JA
 JA_Result calculate_JA(double alpha, double beta, double gamma){
       reslut1_1_tmp_tmp = alpha - epsilon;
       b_reslut1_1_tmp_tmp = sin(reslut1_1_tmp_tmp);
@@ -774,7 +459,7 @@ JA_Result calculate_JA(double alpha, double beta, double gamma){
       return res;
 }
 
-// 计算JT矩阵
+// ??JT??
 void compute_JT(double JT[3][3], double h1, double h2, double AF, double beta, double gamma, double rho, double FH, double px, double py) {
     JT[0][0] = h1;
     JT[0][1] = 0;
@@ -787,7 +472,7 @@ void compute_JT(double JT[3][3], double h1, double h2, double AF, double beta, d
     JT[2][2] = px * cos(rho) - py * sin(rho);
 }
 
-// 计算 tao矩阵
+// ?? tao??
 void compute_tao(double T[1][4], double F0, double judge_1, double judge_2, double k1, double delta1, double F_01, double k2, double delta2, double F_02, double theta2, double theta2_0, double k3, double F_03) {
     T[0][0] = F0;
     if (judge_1 == 1) {
@@ -804,7 +489,7 @@ void compute_tao(double T[1][4], double F0, double judge_1, double judge_2, doub
 
 }
 
-// 矩阵乘法：A(m×n) * B(n×p) = C(m×p)
+// ????:A(m�n) * B(n�p) = C(m�p)
 void matrix_multiply(double *A, double *B, double *C, int m, int n, int p) {
     for ( i = 0; i < m; i++) {
         for ( j = 0; j < p; j++) {
@@ -816,19 +501,19 @@ void matrix_multiply(double *A, double *B, double *C, int m, int n, int p) {
     }
 }
 
-// 计算3×3矩阵的逆矩阵
+// ??3�3??????
 int inverse_3x3(double *A, double *invA) {
-    // 计算行列式
+    // ?????
     double det = A[0]*(A[4]*A[8] - A[5]*A[7]) -
                  A[1]*(A[3]*A[8] - A[5]*A[6]) +
                  A[2]*(A[3]*A[7] - A[4]*A[6]);
 
     if (det == 0.0) {
-        printf("错误：JT矩阵不可逆（行列式为0）\n");
-        return 0; // 失败
+        printf("??:JT?????(????0)\n");
+        return 0; // ??
     }
 
-    // 计算伴随矩阵并除以行列式
+    // ????????????
     invA[0] = (A[4]*A[8] - A[5]*A[7]) / det;
     invA[1] = (A[2]*A[7] - A[1]*A[8]) / det;
     invA[2] = (A[1]*A[5] - A[2]*A[4]) / det;
@@ -841,7 +526,7 @@ int inverse_3x3(double *A, double *invA) {
     invA[7] = (A[1]*A[6] - A[0]*A[7]) / det;
     invA[8] = (A[0]*A[4] - A[1]*A[3]) / det;
 
-    return 1; // 成功
+    return 1; // ??
 }
 
 double calculation_beta(double alpha, double AC, double AF, double CE, double EF, double zeta, double epsilon) {
@@ -871,7 +556,7 @@ double calculation_gamma(double FG, double FH, double GI, double HI, double psy,
 int main_calculate(double F_01, double F_02, double F_03, double alpha, double beta, double gamma, double rho)
 {
 	
-	// 计算 delta0, delta1, delta2, theta2
+	// ?? delta0, delta1, delta2, theta2
     delta0 = calculate_delta0(alpha, beta, gamma);
     delta1 = calculate_delta1(alpha, beta, gamma);
     delta2 = calculate_delta2(alpha, beta, gamma);
@@ -882,13 +567,13 @@ int main_calculate(double F_01, double F_02, double F_03, double alpha, double b
     printf("theta2 = %f\r\n", theta2);
 
     results = calculate_JA(alpha, beta, gamma);
-    // h1, h2实时输入
+    // h1, h2????
     h1 = 1.0;
     h2 = 2.0;
     px = 16.5000;
     py = -1.5000;
-    judge_1 = 1; // judge_1 = 1是耦合，0是自适应
-    judge_2 = 1 ; // judge_2 = 1是耦合，0是自适应
+    judge_1 = 1; // judge_1 = 1???,0????
+    judge_2 = 1 ; // judge_2 = 1???,0????
 
     printf("\n JT matrix is :\r\n");
     compute_JT(JT, h1, h2, AF, beta, gamma, rho, FH, px, py);
@@ -949,106 +634,15 @@ int main_calculate(double F_01, double F_02, double F_03, double alpha, double b
         }
         printf("\r\n");
     }
-    // 第一步: 计算 T * JA
+    // ???: ?? T * JA
     matrix_multiply(&T[0][0], &JA[0][0], &temp[0][0], 1, 4, 3);
-    // 第二步: 计算 JT 的逆矩阵
+    // ???: ?? JT ????
     if (!inverse_3x3(&JT[0][0], &invJT[0][0])) {
-        return -1; // 矩阵不可逆，退出
+        return -1; // ?????,??
     }
-    // 第三步: 计算 temp * invJT
+    // ???: ?? temp * invJT
     matrix_multiply(&temp[0][0], &invJT[0][0], &F[0][0], 1, 3, 3);
     printf("\n result matrix F:\r\n");
     printf("[ %8.4f, %8.4f, %8.4f ]\r\n", F[0][0], F[0][1], F[0][2]);
 		return 0;
 }	
-
-
-void commander_spi(void) {
-    if((SPI_RX_STA & 0x8000) != 0) { // 接收完成标志位检查[1]
-        switch(SPI_RX_BUF[0])
-			{ 
-				case 'Z'://切换模式
-					switch(SPI_RX_BUF[1])
-					{
-						
-						case'A':
-							M1.controller = Type_torque;
-							M1.target = 0;
-							printf("Type_torque!\r\n");
-						break;
-						
-						case 'B':
-							M1.controller = Type_angle_openloop;
-							M1.target = 0;
-							printf("Type_angle_openloop!\r\n");
-						break;
-					
-					}
-			  break;
-			case 'H':
-				printf("Hello World!\r\n");
-				break;
-			case 'A':   //A6.28
-				M1.target=atof((const char *)(SPI_RX_BUF+1));
-				printf("A=%.4f\r\n", M1.target);
-				break;
-			case 'B':   //B6.28
-				M2.target=atof((const char *)(SPI_RX_BUF+1));
-				printf("B=%.4f\r\n", M2.target);
-				break;
-			case 'T':   //T6.28
-				M1.target=atof((const char *)(SPI_RX_BUF+1));
-				M2.target=M1.target;
-				printf("T=%.4f\r\n", M1.target);
-				break;
-			
-			case 'M': 
-				switch(USART_RX_BUF[1])
-				{
-					case 'P':   //设置电流环的P参数,MP1
-						M1.PID_d.P=atof((const char *)(SPI_RX_BUF+2));
-					  M1.PID_q.P=M1.PID_d.P;
-					  printf("M1.current.P=%.4f\r\n", M1.PID_d.P);
-					  break;
-					case 'I':   //设置电流环的I参数,MI0.02
-						M1.PID_d.I=atof((const char *)(SPI_RX_BUF+2));
-					  M1.PID_q.I=M1.PID_d.I;
-					  printf("M1.current.I=%.4f\r\n", M1.PID_d.I);
-					  break;
-					case 'V':   //MV  读实时速度
-					  printf("M1.vel=%.2f\r\n", M1.shaft_velocity);
-						break;
-					case 'A':   //MA  读绝对角度
-					  printf("M1.ang=%.2f\r\n", M1.shaft_angle);
-						break;
-					case 'G':  //MG读取角度传感器的值
-						printf("M1.new_ang=%.2f\r\n", M1.shaft_angle_new);
-						break;
-				}
-				break;
-			case 'N':  //M2
-				switch(SPI_RX_BUF[1])
-				{
-					case 'P':
-						M2.PID_d.P=atof((const char *)(SPI_RX_BUF+2));
-					  M2.PID_q.P=M2.PID_d.P;
-					  printf("M2.current.P=%.4f\r\n", M2.PID_d.P);
-					  break;
-					case 'I':
-						M2.PID_d.I=atof((const char *)(SPI_RX_BUF+2));
-					  M2.PID_q.I=M2.PID_d.I;
-					  printf("M2.current.I=%.4f\r\n", M2.PID_d.I);
-					  break;
-					case 'V':   //MV  读实时速度
-					  printf("M2.vel=%.2f\r\n", M2.shaft_velocity);
-						break;
-					case 'A':   //MA  读绝对角度
-					  printf("M2.ang=%.2f\r\n", M2.shaft_angle);
-						break;
-				}
-				break;
-		}
-		SPI_RX_STA=0;
-       
-    }
-}

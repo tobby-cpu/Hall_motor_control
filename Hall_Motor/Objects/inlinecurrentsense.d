@@ -35,6 +35,7 @@
 .\objects\inlinecurrentsense.o: .\Hardware\timer.h
 .\objects\inlinecurrentsense.o: .\Hardware\adc.h
 .\objects\inlinecurrentsense.o: .\user\MyProject.h
+.\objects\inlinecurrentsense.o: .\spi\SPI.h
 .\objects\inlinecurrentsense.o: .\SimpleFOC\foc_utils.h
 .\objects\inlinecurrentsense.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\inlinecurrentsense.o: .\user\user.h

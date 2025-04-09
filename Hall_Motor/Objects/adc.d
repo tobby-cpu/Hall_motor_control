@@ -35,6 +35,7 @@
 .\objects\adc.o: .\Hardware\delay.h
 .\objects\adc.o: .\Hardware\timer.h
 .\objects\adc.o: .\Hardware\adc.h
+.\objects\adc.o: .\spi\SPI.h
 .\objects\adc.o: .\SimpleFOC\foc_utils.h
 .\objects\adc.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\adc.o: .\user\user.h

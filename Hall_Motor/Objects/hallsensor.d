@@ -35,6 +35,7 @@
 .\objects\hallsensor.o: .\Hardware\timer.h
 .\objects\hallsensor.o: .\Hardware\adc.h
 .\objects\hallsensor.o: .\user\MyProject.h
+.\objects\hallsensor.o: .\spi\SPI.h
 .\objects\hallsensor.o: .\SimpleFOC\foc_utils.h
 .\objects\hallsensor.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\hallsensor.o: .\user\user.h

@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>.\lib\inc;.\startup;.\Hardware;.\SimpleFOC;.\user;.\Hardware\finger</IncludePath>
+              <IncludePath>.\lib\inc;.\startup;.\Hardware;.\SimpleFOC;.\user;.\spi</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -540,6 +540,11 @@
               <FileType>1</FileType>
               <FilePath>.\Hardware\adc.c</FilePath>
             </File>
+            <File>
+              <FileName>spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\spi\spi.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -594,6 +599,21 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\user\main.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>New Group</GroupName>
+          <Files>
+            <File>
+              <FileName>finger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\finger.c</FilePath>
+            </File>
+            <File>
+              <FileName>finger.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\finger.h</FilePath>
             </File>
           </Files>
         </Group>

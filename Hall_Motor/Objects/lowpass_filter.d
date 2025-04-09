@@ -35,6 +35,7 @@
 .\objects\lowpass_filter.o: .\Hardware\timer.h
 .\objects\lowpass_filter.o: .\Hardware\adc.h
 .\objects\lowpass_filter.o: .\user\MyProject.h
+.\objects\lowpass_filter.o: .\spi\SPI.h
 .\objects\lowpass_filter.o: .\SimpleFOC\foc_utils.h
 .\objects\lowpass_filter.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\lowpass_filter.o: .\user\user.h
