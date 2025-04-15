@@ -30,6 +30,7 @@
 ".\objects\usart.o"
 ".\objects\adc.o"
 ".\objects\spi.o"
+".\objects\finger.o"
 ".\objects\foc_utils.o"
 ".\objects\focmotor.o"
 ".\objects\bldcmotor.o"

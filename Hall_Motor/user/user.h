@@ -2,7 +2,7 @@
 
 #ifndef MYUSER_H
 #define MYUSER_H
-
+#include "stdint.h"
 
 /******************************************************************************/
 // dq current structure 
@@ -123,6 +123,9 @@ typedef struct
 	long  angle_data_prev;
 	float angle_prev;
 	unsigned long velocity_calc_timestamp;
+	float	force1[128];
+	uint8_t force2[128];
+	uint8_t force3[128];
 } MOTORController;
 
 extern MOTORController M1,M2;

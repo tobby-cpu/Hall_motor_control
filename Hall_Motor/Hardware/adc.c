@@ -79,9 +79,9 @@ void configureADC(void)
     RCC_ADCCLKConfig(RCC_PCLK2_Div6);   // ADC时钟=12MHz
 
     // 2. 配置PB0为模拟输入
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;       // PB0|PB1
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4;       // PB0|PB1
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;    // 模拟输入模式
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
 
     // 3. 初始化ADC1
     ADC_DeInit(ADC1);

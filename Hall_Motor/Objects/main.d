@@ -48,3 +48,4 @@
 .\objects\main.o: .\SimpleFOC\InlineCurrentSense.h
 .\objects\main.o: .\SimpleFOC\CurrentSense.h
 .\objects\main.o: .\SimpleFOC\HallSensor.h
+.\objects\main.o: .\finger\finger.h

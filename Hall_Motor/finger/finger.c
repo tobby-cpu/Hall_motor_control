@@ -1,4 +1,79 @@
-// ?? delta0
+#include "stm32f10x.h"
+#include <string.h>
+#include <stdlib.h>
+#include "MyProject.h"
+#include "user.h"
+#include "finger.h"
+
+#define PI 3.14159265358979323846
+#define rtIsNaN(x) (isnan(x))
+#define rtIsInf(x) (isinf(x))
+#define rtNaN (NAN)
+#define rtInf (INFINITY)
+#define MATRIX_ELEMENT(m, i, j) m[i][j]
+
+double JT[3][3], h1, h2, px, py, udge_1,judge_1,judge_2;     
+const double PI_OVER_2;
+double JT[3][3];
+double tao[1][4];
+int i, j, k, m;  
+
+double delta0, delta1, delta2, theta2;
+double JA[4][3];
+typedef struct {
+    double result1[3];
+    double result2[3];
+    double result3[3];
+    double result4[3];
+} JA_Result;
+double T[1][4];
+double k1 = 1;
+double k2 = 1;
+double k3 = 1;
+double F0 = 5;
+double theta2_0 = 2.3562;
+
+double temp[1][3];
+double invJT[3][3];
+double F[1][3];
+double beta_o;
+double gamma_o;
+JA_Result results;
+//***************************************************************************************************************************************************//
+
+JA_Result res;
+double a_tmp, a_tmp_tmp, a_tmp_tmp_tmp, a_tmp_tmp_tmp_tmp, b_a_tmp, b_a_tmp_tmp, b_a_tmp_tmp_tmp, b_reslut1_1_tmp, b_reslut1_1_tmp_tmp;
+double c_a_tmp, c_a_tmp_tmp, c_reslut1_1_tmp, c_reslut1_1_tmp_tmp, d_a_tmp, d_a_tmp_tmp, d_reslut1_1_tmp, d_reslut1_1_tmp_tmp, e_a_tmp;
+double e_a_tmp_tmp, e_reslut1_1_tmp, e_reslut1_1_tmp_tmp, f_a_tmp, f_a_tmp_tmp, f_reslut1_1_tmp, f_reslut1_1_tmp_tmp, g_a_tmp, g_a_tmp_tmp;
+double g_reslut1_1_tmp, g_reslut1_1_tmp_tmp, h_a_tmp, h_a_tmp_tmp, h_reslut1_1_tmp, h_reslut1_1_tmp_tmp, i_a_tmp, i_a_tmp_tmp, i_reslut1_1_tmp;
+double j_a_tmp, j_a_tmp_tmp, j_reslut1_1_tmp, k_a_tmp, k_a_tmp_tmp, k_reslut1_1_tmp, l_a_tmp, l_a_tmp_tmp, l_reslut1_1_tmp, m_a_tmp, m_a_tmp_tmp;
+double m_reslut1_1_tmp, n_reslut1_1_tmp, o_reslut1_1_tmp, p_reslut1_1_tmp, q_reslut1_1_tmp, r_reslut1_1_tmp, reslut1_1_tmp, reslut1_1_tmp_tmp;
+double reslut1_1_tmp_tmp_tmp, reslut1_1_tmp_tmp_tmp_tmp, result1_1, result1_2, result1_3, result2_1, result2_2, result2_3, result3_1, result3_2, result3_3;
+double result4_1, result4_2, result4_3;
+/****************************************************************************************************************************************************/
+
+double zeta = 0.7854;
+double  epsilon = 3.1416;
+double  lambda = 0;
+double  AF = 45;
+double  AC = 14.2891;
+double  AB = 5.8710;
+double  EF = 11.5000;
+double  DE = 24.4060;
+double  CD = 15.2790;
+double  DK = 2.8000;
+double  BK = 28.6700;
+double  phi = 156.5722;
+double  FH = 28;
+double  FG = 5.2818;
+double  psy = 0.7854;
+double  HI = 11;
+double  GI = 32.4708;
+double  CE = 39.6850;
+double  F_0 = 0;
+double  F_1 = 0;
+double  F_2 = 0;
+//***************************************************************************************************************************************************//
 double calculate_delta0(double alpha, double beta, double gamma) {
       double a_tmp;
       double a_tmp_tmp;
@@ -47,7 +122,6 @@ double calculate_delta0(double alpha, double beta, double gamma) {
       e_a_tmp) + b_a_tmp)) - e_delta0_tmp)))) * sqrt((a_tmp - g_a_tmp) - e_delta0_tmp)) + b_delta0_tmp) - g_a_tmp) - e_delta0_tmp);
 }
 
-// ?? delta1
 double calculate_delta1(double alpha, double beta, double gamma) {
     return CD + DE - sqrt(AC * AC + AF * AF + EF * EF + 2 * AC * AF * cos(alpha - epsilon) +
         2 * EF * cos(beta + zeta + asin((AC * sin(alpha - epsilon)) /
@@ -55,7 +129,7 @@ double calculate_delta1(double alpha, double beta, double gamma) {
         sqrt(AC * AC + 2 * cos(alpha - epsilon) * AC * AF + AF * AF));
 }
 
-// ?? delta2
+
 double calculate_delta2(double alpha, double beta, double gamma) {
     double delta2_1 = FG * FG + FH * FH + HI * HI;
     double delta2_2 = cos(gamma + psy + asin((FG * sin(beta - phi)) / sqrt(FG * FG + FH * FH + 2 * FG * FH * cos(beta - phi))));
@@ -489,7 +563,7 @@ void compute_tao(double T[1][4], double F0, double judge_1, double judge_2, doub
 
 }
 
-// ????:A(m×n) * B(n×p) = C(m×p)
+
 void matrix_multiply(double *A, double *B, double *C, int m, int n, int p) {
     for ( i = 0; i < m; i++) {
         for ( j = 0; j < p; j++) {
@@ -501,19 +575,19 @@ void matrix_multiply(double *A, double *B, double *C, int m, int n, int p) {
     }
 }
 
-// ??3×3??????
+
 int inverse_3x3(double *A, double *invA) {
-    // ?????
+    
     double det = A[0]*(A[4]*A[8] - A[5]*A[7]) -
                  A[1]*(A[3]*A[8] - A[5]*A[6]) +
                  A[2]*(A[3]*A[7] - A[4]*A[6]);
 
     if (det == 0.0) {
-        printf("??:JT?????(????0)\n");
-        return 0; // ??
+        printf("False\r\n");
+        return 0; 
     }
 
-    // ????????????
+   
     invA[0] = (A[4]*A[8] - A[5]*A[7]) / det;
     invA[1] = (A[2]*A[7] - A[1]*A[8]) / det;
     invA[2] = (A[1]*A[5] - A[2]*A[4]) / det;
@@ -526,7 +600,7 @@ int inverse_3x3(double *A, double *invA) {
     invA[7] = (A[1]*A[6] - A[0]*A[7]) / det;
     invA[8] = (A[0]*A[4] - A[1]*A[3]) / det;
 
-    return 1; // ??
+    return 1; 
 }
 
 double calculation_beta(double alpha, double AC, double AF, double CE, double EF, double zeta, double epsilon) {
@@ -556,7 +630,7 @@ double calculation_gamma(double FG, double FH, double GI, double HI, double psy,
 int main_calculate(double F_01, double F_02, double F_03, double alpha, double beta, double gamma, double rho)
 {
 	
-	// ?? delta0, delta1, delta2, theta2
+	//delta0, delta1, delta2, theta2
     delta0 = calculate_delta0(alpha, beta, gamma);
     delta1 = calculate_delta1(alpha, beta, gamma);
     delta2 = calculate_delta2(alpha, beta, gamma);
@@ -567,13 +641,12 @@ int main_calculate(double F_01, double F_02, double F_03, double alpha, double b
     printf("theta2 = %f\r\n", theta2);
 
     results = calculate_JA(alpha, beta, gamma);
-    // h1, h2????
     h1 = 1.0;
     h2 = 2.0;
     px = 16.5000;
     py = -1.5000;
-    judge_1 = 1; // judge_1 = 1???,0????
-    judge_2 = 1 ; // judge_2 = 1???,0????
+    judge_1 = 1; 
+    judge_2 = 1 ; 
 
     printf("\n JT matrix is :\r\n");
     compute_JT(JT, h1, h2, AF, beta, gamma, rho, FH, px, py);
@@ -634,15 +707,16 @@ int main_calculate(double F_01, double F_02, double F_03, double alpha, double b
         }
         printf("\r\n");
     }
-    // ???: ?? T * JA
+  
     matrix_multiply(&T[0][0], &JA[0][0], &temp[0][0], 1, 4, 3);
-    // ???: ?? JT ????
+   
     if (!inverse_3x3(&JT[0][0], &invJT[0][0])) {
-        return -1; // ?????,??
+        return -1; 
     }
-    // ???: ?? temp * invJT
+   
     matrix_multiply(&temp[0][0], &invJT[0][0], &F[0][0], 1, 3, 3);
     printf("\n result matrix F:\r\n");
     printf("[ %8.4f, %8.4f, %8.4f ]\r\n", F[0][0], F[0][1], F[0][2]);
 		return 0;
 }	
+
