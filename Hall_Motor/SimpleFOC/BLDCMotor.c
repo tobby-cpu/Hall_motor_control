@@ -152,7 +152,7 @@ void loopFOC(MOTORController *M, unsigned char ch)
 	if( M->controller==Type_angle_openloop || M->controller==Type_velocity_openloop ) return;
 	
 	M->shaft_angle = shaftAngle(M);// shaft angle
-	M->shaft_angle_new = _readADCVoltageInline(ch);
+	M->shaft_angle_new = _readADCVoltageInline(ch);//初始化ADC的函数
 
 	M->electrical_angle = electricalAngle(M);// electrical angle - need shaftAngle to be called first
 	

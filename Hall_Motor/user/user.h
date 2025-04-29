@@ -123,7 +123,7 @@ typedef struct
 	long  angle_data_prev;
 	float angle_prev;
 	unsigned long velocity_calc_timestamp;
-	float	force1[128];
+	uint8_t force1[128];
 	uint8_t force2[128];
 	uint8_t force3[128];
 } MOTORController;

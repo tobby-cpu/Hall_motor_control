@@ -12,14 +12,12 @@
 #define PI 3.14159265358979323846
 /*****************************************************************************************************************************************************/
 MOTORController M1,M2;
-float voltage[256];
 long timecntr_pre=0;
 long time_cntr=0;
-int ii;
+
 void commander_run(void);
 void commander_spi(void);
-void commander_uart(void);
-void actual_pressure(uint8_t data[64]);
+int kk;
 /******************************************************************************/
 //us计时，每71.5分钟溢出循环一次
 uint32_t timecount(void)
@@ -59,7 +57,7 @@ int main(void)
 {
 	GPIO_Config();
 	uart_init(115200);
-	uart3_init(406800);
+	uart3_init(460800);
 	strcpy(M1.str, "M1");
 	strcpy(M2.str, "M2");
 	TIM2_PWM_Init();    //M1_PWM
@@ -141,10 +139,11 @@ int main(void)
 		move(&M2, M2.target);
 		loopFOC(&M2,ADC_Channel_4);
 		commander_run();
-		commander_uart();
-		main_calculate(1, 1, 1, 30, M1.shaft_angle_new, M2.shaft_angle_new, 60);
-		//delay_ms(10000);
-	}
+		printf("index: %d",max_indexs);
+		//main_calculate(*max_index, *max_index, *max_index, 30, M1.shaft_angle_new, M2.shaft_angle_new, 60);//初始化一个新的ADC//将max_value变为外部变量//调试的时候不要delay
+		//delay_ms(50);
+  }
+
 }
 
 void commander_run(void)
@@ -325,57 +324,4 @@ void commander_spi(void) {
     }
 }
 
-void commander_uart()//需要调试
-{
-		if((USART_RX_STA2&0x8000)!=0)
-	{
-		switch(USART_RX_BUF2[0])
-			{ 
-				case 0xAA:  //三个触觉传感器,需要对其数据类型和包头包尾
-					switch(USART_RX_BUF2[1])
-				{
-					case 0X01: 
-						
-						actual_pressure(USART_RX_BUF2);
-					 	for(ii=0;ii<=80;ii++)
-						{
-							M1.force1[ii] = voltage[ii];
-							break;
-						}
-						printf("M1.force1=%.4f\r\n", M1.force1[0]);
-						break;
-					case 0X02: 
-						for(ii=0;ii<=80;ii++)
-						{
-							M1.force2[ii] = USART_RX_BUF2[ii+2];
-							//printf("M1.force1=%.4f\r\n", M1.force2[0]);
-							break;
-						}
-						break;
-					case 0X03:  
-						for(ii=0;ii<=80;ii++)
-						{
-							M1.force3[ii] = USART_RX_BUF2[ii+2];
-							//printf("M1.force1=%.4f\r\n", M1.force3[0]);
-							break;
-						}
-						break;
-					}
-				break;
-				}
-		USART_RX_STA2=0;
-	}
-}
 
-void actual_pressure(uint8_t data[256])
-{
-	int16_t raw_value[32];
-
-	const float scale_factor = 10.0f / 32767.0f; 
-		for(ii=2;ii>=80;ii++)
-	{
-			raw_value[ii] = (data[(ii-1*2)] << 8) | data[(ii-1)*2+1];
-			voltage[ii] = raw_value[ii] * scale_factor;
-	}
-
-}

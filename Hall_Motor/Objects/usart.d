@@ -30,3 +30,4 @@
 .\objects\usart.o: .\lib\inc\stm32f10x_usart.h
 .\objects\usart.o: .\lib\inc\stm32f10x_wwdg.h
 .\objects\usart.o: .\lib\inc\misc.h
+.\objects\usart.o: .\user\user.h
